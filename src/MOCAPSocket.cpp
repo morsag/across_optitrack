@@ -4,6 +4,11 @@ using namespace std;
 
 MOCAPSocket::MOCAPSocket()
 {
+	/**
+	 * This function opens a nonblocking socket to be stuffed with the
+	 * rigid body data. More details on sockets can be found here:
+	 * http://www.linuxhowtos.org/C_C++/socket.htm
+	 */
 	DataSocket = socket( AF_INET, SOCK_DGRAM, 0 );
 	int value = 1;
 	int retvalue = setsockopt(DataSocket,SOL_SOCKET,SO_REUSEADDR,(char*)&value,sizeof(value));
@@ -68,23 +73,28 @@ int MOCAPSocket::Read()
 }
 int MOCAPSocket::Receive(void)
 {
-	//function that receives the data from the Socket
-	//returns the number of the received bytes
-  sockaddr_in remote_addr;
-  int addr_len = sizeof(struct sockaddr);
-  int status = recvfrom(
-    DataSocket,
-    buffer,
-    MAXRECV,
-    0,
-    (sockaddr *)&remote_addr,
-    (socklen_t*)&addr_len);
-  return status;
+	/**
+	 * A function that receives the data from the Socket and returns
+	 * the number of received bytes.
+	 */
+	  sockaddr_in remote_addr;
+	  int addr_len = sizeof(struct sockaddr);
+	  int status = recvfrom(
+		DataSocket,
+		buffer,
+		MAXRECV,
+		0,
+		(sockaddr *)&remote_addr,
+		(socklen_t*)&addr_len);
+	  return status;
 }
 
 void MOCAPSocket::ParseData(char* pData)
 {
-	// Parses the received data
+	/**
+	 * A function that parses received data from the Socket and stuffs it
+	 * in the appropriate rigid body objects.
+	 */
     char *ptr = pData;
     // message ID 2 bytes
     int MessageID = 0;

@@ -34,16 +34,18 @@ public:
         MOCAPSocket();
         virtual ~MOCAPSocket();
         int Read();
+        RigidBodyObject rigidBody [MAX_RIGID_BODY];
+private:
         int Receive();
         void ParseData(char* pData);
         int DataSocket;
         struct sockaddr_in SocketAddrIn;
         struct ip_mreq Mreq;
         char buffer [ MAXRECV + 1 ];
-        RigidBodyObject rigidBody [MAX_RIGID_BODY];
         int frameNmbr;
         void Q2Euler(RigidBodyObject* RB);
         float Rad2Deg(float angle);
+        int NmbrOfRBs;
 };
 
 
