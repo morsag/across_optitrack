@@ -158,6 +158,7 @@ void MOCAPSocket::ParseData(char* pData)
 		int nBytes = nRigidBodyMarkers*3*sizeof(float);ptr += nBytes;//XYZ
 		nBytes = nRigidBodyMarkers*sizeof(int);ptr += nBytes;//MarkerIDs
 		nBytes = nRigidBodyMarkers*sizeof(float);ptr += nBytes;//MarkerSize
+		ptr += 4;
 	}
 }
 void MOCAPSocket::Q2Euler(RigidBodyObject* RB)

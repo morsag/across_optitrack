@@ -1,9 +1,9 @@
 #include "ros/ros.h"
-#include "mocap/RigidBody.h"
+//#include "mocap/RigidBody.h"
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/Quaternion.h>
-#include "mocap/pc2quadcopter.h"
+//#include "mocap/pc2quadcopter.h"
 #include "MOCAPSocket.h"
 #include <sstream>
 /////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,9 @@ int main(int argc, char **argv)
    */
   //ros::Publisher chatter_pub = n.advertise<geometry_msgs::Transform>("servo", 1000);
   ros::Publisher chatter_pub = n.advertise<geometry_msgs::Pose>("/Optitrack/RB0", 1000);
+  ros::Publisher chatter_pub1 = n.advertise<geometry_msgs::Pose>("/Optitrack1/RB1", 1000);
   ros::Rate loop_rate(100);
+
 
   /**
    * A count of how many messages we have sent. This is used to create
@@ -87,6 +89,7 @@ int main(int argc, char **argv)
      * This is a message object. You stuff it with data, and then publish it.
      */
 		geometry_msgs::Pose msg;
+    geometry_msgs::Pose msg1;
 		//mocap::pc2quadcopter msg;
     	//msg.rotation.x=Socket.rigidBody[0].qx;
     	//msg.rotation.y=Socket.rigidBody[0].qy;
@@ -94,21 +97,43 @@ int main(int argc, char **argv)
     	//msg.rotation.w=Socket.rigidBody[0].qw;
     	//msg.translation.x
 		//joy.Refresh();
-		msg.orientation.x=Socket.rigidBody[0].roll*3.14/180;
-    	//msg.translation.y=Socket.rigidBody[0].y;
-		msg.orientation.y=Socket.rigidBody[0].pitch*3.14/180;
-		//msg.translation.z=Socket.rigidBody[0].z;
-		msg.orientation.z=Socket.rigidBody[0].yaw*3.14/180;
-		//msg.orientation.w=(Socket.rigidBody[0].x-Socket.rigidBody[0].x_old)/20;
-	    //msg.position.x= (joy.axis1_-500)*3.14/4500;
-		//msg.position.y= -(joy.axis2_-500)*3.14/4500;
-		msg.position.x= -Socket.rigidBody[0].z;
-		msg.position.y= Socket.rigidBody[0].x;
-		msg.position.z=	Socket.rigidBody[0].y;
-		//msg.speed.x=-(Socket.rigidBody[0].z-Socket.rigidBody[0].z_old)/20;
-		//msg.speed.y=(Socket.rigidBody[0].x-Socket.rigidBody[0].x_old)/20;
-		//msg.speed.z=(Socket.rigidBody[0].y-Socket.rigidBody[0].y_old)/20;
-    	chatter_pub.publish(msg);
+    if (Socket.rigidBody[0].pitch!=0 && Socket.rigidBody[0].roll!=0 && Socket.rigidBody[0].yaw!=0)
+    {
+      msg.orientation.x=Socket.rigidBody[0].pitch*3.14/180;
+        //msg.translation.y=Socket.rigidBody[0].y;
+      msg.orientation.y=Socket.rigidBody[0].roll*3.14/180;
+      //msg.translation.z=Socket.rigidBody[0].z;
+      msg.orientation.z=Socket.rigidBody[0].yaw*3.14/180;
+      //msg.orientation.w=(Socket.rigidBody[0].x-Socket.rigidBody[0].x_old)/20;
+        //msg.position.x= (joy.axis1_-500)*3.14/4500;
+      //msg.position.y= -(joy.axis2_-500)*3.14/4500;
+      msg.position.x= Socket.rigidBody[0].z;
+      msg.position.y= Socket.rigidBody[0].x;
+      msg.position.z= Socket.rigidBody[0].y;
+      //msg.speed.x=-(Socket.rigidBody[0].z-Socket.rigidBody[0].z_old)/20;
+      //msg.speed.y=(Socket.rigidBody[0].x-Socket.rigidBody[0].x_old)/20;
+      //msg.speed.z=(Socket.rigidBody[0].y-Socket.rigidBody[0].y_old)/20;
+      chatter_pub.publish(msg);
+
+    }
+    if (Socket.rigidBody[1].pitch!=0.0 && Socket.rigidBody[1].roll!=0.0 && Socket.rigidBody[1].yaw!=0.0)
+    {
+      msg1.orientation.x=Socket.rigidBody[1].pitch*3.14/180;
+        //msg.translation.y=Socket.rigidBody[0].y;
+      msg1.orientation.y=Socket.rigidBody[1].roll*3.14/180;
+      //msg.translation.z=Socket.rigidBody[0].z;
+      msg1.orientation.z=Socket.rigidBody[1].yaw*3.14/180;
+      //msg.orientation.w=(Socket.rigidBody[0].x-Socket.rigidBody[0].x_old)/20;
+        //msg.position.x= (joy.axis1_-500)*3.14/4500;
+      //msg.position.y= -(joy.axis2_-500)*3.14/4500;
+      msg1.position.x= Socket.rigidBody[1].z;
+      msg1.position.y= Socket.rigidBody[1].x;
+      msg1.position.z= Socket.rigidBody[1].y;
+      chatter_pub1.publish(msg1);
+
+    }
+
+    
     }
     //ROS_INFO("%s", msg.data.c_str());
 
