@@ -1,0 +1,6 @@
+<launch>
+    <arg name="names_file" default="$(find across_optitrack)/launch/drones.txt"/>
+    <arg name="namespace" default="alpha_one"/>
+    <node name="MOCAPnode" pkg="across_optitrack" type="MOCAPnode" ns="$(arg namespace)" args="-trackables $(arg names_file)">
+    </node>
+</launch>

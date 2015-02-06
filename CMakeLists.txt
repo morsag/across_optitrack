@@ -1,36 +1,45 @@
-cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
+cmake_minimum_required(VERSION 2.8.3)
 
-rosbuild_init()
+project(across_optitrack)
 
-#set the default path for built executables to the "bin" directory
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+find_package(catkin REQUIRED COMPONENTS 
+	roscpp
+	std_msgs
+	tf
+	geometry_msgs
+	genmsg 
+	message_generation)
 
-#uncomment if you have defined messages
-rosbuild_genmsg()
-#uncomment if you have defined services
-#rosbuild_gensrv()
+add_message_files(
+	DIRECTORY msg
+	FILES pc2quadcopter.msg  RigidBody.msg Vector3F.msg quadcopter2pc.msg)
 
-#common commands for building c++ executables and libraries
-#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
-#rosbuild_add_boost_directories()
-#rosbuild_link_boost(${PROJECT_NAME} thread)
-#rosbuild_add_executable(example examples/example.cpp)
-#target_link_libraries(example ${PROJECT_NAME})
-rosbuild_add_executable(MOCAPnode src/MOCAPNode.cpp)
-rosbuild_add_library(MS src/MOCAPSocket.cpp)
-rosbuild_add_library(JOY src/SDLinput.cpp)
+
+generate_messages(DEPENDENCIES std_msgs geometry_msgs)
+
+catkin_package(
+	INCLUDE_DIRS launch src msg
+	LIBRARIES across_optitrack
+	CATKIN_DEPENDS geometry_msgs roscpp std_msgs message_runtime
+	DEPENDS system_lib
+	)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+
+
+
+add_executable(MOCAPnode src/MOCAPNode.cpp)
+#add_executable(kalman_filter_data src/kalman_filter_data.cpp)
+add_executable(optitrack_vision src/optitrack_vision.cpp)
+
+add_library(MS src/MOCAPSocket.cpp)
+add_library(JOY src/SDLinput.cpp)
+
 target_link_libraries(MOCAPnode MS)
 target_link_libraries(MOCAPnode JOY)
 target_link_libraries(MOCAPnode SDL pthread)
+
+target_link_libraries(MOCAPnode ${catkin_LIBRARIES})
+#target_link_libraries(kalman_filter_data ${catkin_LIBRARIES})
+target_link_libraries(optitrack_vision ${catkin_LIBRARIES})

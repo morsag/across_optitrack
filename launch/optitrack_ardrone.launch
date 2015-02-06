@@ -1,0 +1,5 @@
+<launch>
+    <arg name="names_file" default="$(find across_optitrack)/launch/ardrone.txt"/>
+    <node name="MOCAPnode" pkg="across_optitrack" type="MOCAPnode" args="-trackables $(arg names_file)">
+    </node>
+</launch>
