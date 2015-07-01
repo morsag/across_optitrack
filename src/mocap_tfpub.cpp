@@ -1,32 +1,10 @@
 #include "ros/ros.h"
-//#include "mocap/RigidBody.h"
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
 #include "MOCAPSocket.h"
 #include <vector>
-//include <sstream>
-/////////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <string>
-#include <stdio.h>
-#include <cstring>
-#include <cerrno>
-#include <fcntl.h>
-#include <sys/time.h>
-#include <iostream>
-#include <arpa/inet.h>
-#include <time.h> 
-#include <iostream>
-#include <stdlib.h>
-#include <string.h>
-
-using namespace std;
 
 float LowPassFilter(float u, float y, float r)
 {
