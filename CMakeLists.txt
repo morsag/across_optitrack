@@ -30,6 +30,7 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 
 add_executable(MOCAPnode src/MOCAPNode.cpp)
+add_executable(mocap_tfpub src/mocap_tfpub.cpp)
 #add_executable(kalman_filter_data src/kalman_filter_data.cpp)
 
 add_library(MS src/MOCAPSocket.cpp)
@@ -41,3 +42,5 @@ target_link_libraries(MOCAPnode SDL pthread)
 
 target_link_libraries(MOCAPnode ${catkin_LIBRARIES})
 #target_link_libraries(kalman_filter_data ${catkin_LIBRARIES})
+
+target_link_libraries(mocap_tfpub ${catkin_LIBRARIES} MS)
