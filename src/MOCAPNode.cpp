@@ -23,7 +23,7 @@
 #include <iostream>
 #include <arpa/inet.h>
 #include <time.h> 
-#include "SDLinput.h"
+//#include "SDLinput.h"
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>

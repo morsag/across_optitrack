@@ -34,11 +34,13 @@ add_executable(mocap_tfpub src/mocap_tfpub.cpp)
 #add_executable(kalman_filter_data src/kalman_filter_data.cpp)
 
 add_library(MS src/MOCAPSocket.cpp)
-add_library(JOY src/SDLinput.cpp)
+#add_library(JOY src/SDLinput.cpp)
 
 target_link_libraries(MOCAPnode MS)
-target_link_libraries(MOCAPnode JOY)
-target_link_libraries(MOCAPnode SDL pthread)
+#target_link_libraries(MOCAPnode JOY)
+#target_link_libraries(MOCAPnode SDL pthread)
+target_link_libraries(MOCAPnode)
+target_link_libraries(MOCAPnode pthread)
 
 target_link_libraries(MOCAPnode ${catkin_LIBRARIES})
 #target_link_libraries(kalman_filter_data ${catkin_LIBRARIES})
